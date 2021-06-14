@@ -60,18 +60,4 @@ export const actions = {
 
         return Promise.resolve();
     },
-    // selectTicker({ commit }, ticker: ITicker | null) {
-    //     // commit('graphStore/resetGraph', null, { root: true });
-    //     // if (ticker) {
-    //     //     ticker.graph = [];
-    //     //     ticker.normalizedGraph = [];
-    //     // }
-    //
-    //     commit('selectTicker', ticker);
-    // },
-    // remove({ commit }, ticker: ITicker) {
-    //     // commit('graphStore/resetGraph', null, { root: true });
-    //     commit('remove', ticker);
-    //     commit('selectTicker', null);
-    // },
 };

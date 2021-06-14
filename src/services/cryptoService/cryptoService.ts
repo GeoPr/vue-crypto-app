@@ -1,5 +1,6 @@
 import { ICryptoOutput } from '@/services/cryptoService/types';
 import { getQueryParams } from '@/utils/getQueryParams/getQueryParams';
+import { HttpRequestService } from '@/services/httpRequestService/httpRequestService';
 
 const URL = 'https://min-api.cryptocompare.com/data/price';
 const tsyms = ['USD'].join(',');
@@ -12,8 +13,7 @@ export class CryptoService {
         const requestUrl = URL + queries;
 
         try {
-            const response = await fetch(requestUrl);
-            const data: ICryptoOutput = await response.json();
+            const data = await HttpRequestService.fetch<ICryptoOutput>(requestUrl);
             return Promise.resolve(data);
         } catch (e) {
             return Promise.reject(e);

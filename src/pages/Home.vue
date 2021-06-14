@@ -32,7 +32,7 @@
 
 <script>
 import TickerForm from '@/components/TickerForm';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Ticker from '@/components/Ticker';
 import Loader from '@/components/Loader';
 import Graph from '@/components/Graph';
@@ -48,18 +48,22 @@ export default {
     },
     data() {
         return {
-            isLoading: false, // todo: true
+            isLoading: true, // todo: true
         };
     },
     methods: {
+        ...mapActions({
+            getCoins: 'coinsStore/getCoins',
+        }),
         canShowLines() {
             return this?.tickers?.length;
         },
     },
     mounted() {
-        setTimeout(() => {
+        (async () => {
+            await this.getCoins();
             this.isLoading = false;
-        }, 2000);
+        })();
     },
 };
 </script>

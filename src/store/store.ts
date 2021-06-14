@@ -1,12 +1,12 @@
 import { createStore } from 'vuex';
 import { tickersStore } from '@/store/tickersStore/tickersStore';
 import { getStoreModules } from '@/utils/getStoreModules/getStoreModules';
-import { graphStore } from '@/store/graphStore/graphStore';
+import { coinsStore } from '@/store/coinsStore/coinsStore';
 
 // namespaced: true - tickersStore/add
 // namespaced: false - add
 
-const modulesArray = [tickersStore, graphStore];
+const modulesArray = [tickersStore, coinsStore];
 
 export const store = createStore({
     modules: getStoreModules({ modules: modulesArray }),

@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="addTicker">
+    <form @submit.prevent="addTicker()">
         <div class="flex">
             <div class="max-w-xs">
                 <label
@@ -17,18 +17,20 @@
                         class="block w-full p-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm rounded-md h-10"
                         placeholder="Например DOGE, BCH, CHD"
                         v-model="tickerName"
+                        @input="onInputChange"
                     />
                 </div>
                 <div
                     class="flex bg-white shadow-md p-1 rounded-md shadow-md flex-wrap"
-                    v-if="tickers?.length"
+                    v-if="filteredCoins?.length"
                 >
                     <span
                         class="inline-flex items-center px-2 m-1 rounded-md text-xs font-medium bg-gray-300 text-gray-800 cursor-pointer"
-                        v-for="ticker in tickers"
-                        :key="ticker.name"
+                        v-for="coin in filteredCoins"
+                        :key="coin.Symbol"
+                        @click="addTicker(coin.Symbol)"
                     >
-                      {{ ticker.name.toUpperCase() }}
+                      {{ coin?.Symbol.toUpperCase() }}
                     </span>
                 </div>
                 <div class="text-sm text-red-600" v-if="error || !tickerName">
@@ -59,13 +61,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
     name: 'TickerForm',
     computed: {
         ...mapGetters({
             tickers: 'tickersStore/tickers',
+            filteredCoins: 'coinsStore/filteredCoins',
         }),
     },
     data() {
@@ -78,25 +81,33 @@ export default {
         ...mapActions({
             add: 'tickersStore/add',
         }),
-        addTicker() {
+        ...mapMutations({
+            validateCoins: 'coinsStore/validateCoins',
+            resetFilteredCoins: 'coinsStore/resetFilteredCoins',
+        }),
+        addTicker(name) {
             const trimmed = this.tickerName.trim();
 
             if (trimmed) {
-                // this.$store.dispatch('tickersStore/add', trimmed)
-                this.add(trimmed)
+                this.add(name ?? trimmed)
                     .then(() => {
                         this.error = '';
                         this.tickerName = '';
+                        this.resetFilteredCoins();
                     })
                     .catch(() => {
                         this.error = 'This ticker exists already';
                     });
                 // .finally(() => {
                 //     this.tickerName = '';
+                //     this.resetCoins();
                 // });
             } else {
                 this.error = 'Cannot be empty';
             }
+        },
+        onInputChange() {
+            this.validateCoins({ length: 4, tickerName: this.tickerName });
         },
     },
 };
