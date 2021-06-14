@@ -9,7 +9,6 @@ import { HttpRequestService } from '@/services/httpRequestService/httpRequestSer
 
 const URL = 'https://min-api.cryptocompare.com/data/all/coinlist?summary=true';
 
-// todo: any
 const transformData = (data: ICoinsOutput): ICoin[] => {
     return Object.entries(data).reduce((acc: ICoin[], [, value]) => {
         acc.push(value);
