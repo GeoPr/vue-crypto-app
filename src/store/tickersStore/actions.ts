@@ -5,7 +5,7 @@ import { IState } from '@/store/tickersStore/types';
 export const actions = {
     async add({ state }: ActionContext<IState, IState>, name: string) {
         const getCurrent = () => {
-            return state.tickers.find(ticker => ticker.name?.toLowerCase() === name.toLowerCase());
+            return state.filteredTickers.find(ticker => ticker.name?.toLowerCase() === name.toLowerCase());
         };
 
         const candidate = getCurrent();
@@ -14,12 +14,15 @@ export const actions = {
             return Promise.reject();
         }
 
-        state.tickers.push({
+        const newTicker = {
             name,
             price: null,
             graph: [],
             normalizedGraph: [],
-        });
+        };
+
+        state.tickers.push(newTicker);
+        state.filteredTickers.push(newTicker);
 
         const currentTicker = getCurrent();
 

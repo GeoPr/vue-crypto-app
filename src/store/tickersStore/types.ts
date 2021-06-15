@@ -8,4 +8,5 @@ export interface ITicker {
 export interface IState {
     tickers: ITicker[];
     selectedTicker: ITicker | null;
+    filteredTickers: ITicker[];
 }

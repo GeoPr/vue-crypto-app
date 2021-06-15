@@ -10,10 +10,18 @@
                 class="w-full border-t border-gray-600 my-4"
                 v-if="canShowLines()"
             />
+
+            <Filter />
+
+            <hr
+                class="w-full border-t border-gray-600 my-4"
+                v-if="canShowLines()"
+            />
+
             <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
 
                 <Ticker
-                    v-for="ticker in tickers"
+                    v-for="ticker in filteredTickers"
                     :key="ticker.name"
                     :ticker="ticker"
                 />
@@ -36,19 +44,20 @@ import { mapActions, mapGetters } from 'vuex';
 import Ticker from '@/components/Ticker';
 import Loader from '@/components/Loader';
 import Graph from '@/components/Graph';
+import Filter from '@/components/Filter';
 
 export default {
     name: 'Home',
-    components: { Graph, Loader, Ticker, TickerForm },
+    components: { Filter, Graph, Loader, Ticker, TickerForm },
     computed: {
         ...mapGetters({
-            tickers: 'tickersStore/tickers',
+            filteredTickers: 'tickersStore/filteredTickers',
             selectedTicker: 'tickersStore/selectedTicker',
         }),
     },
     data() {
         return {
-            isLoading: true, // todo: true
+            isLoading: true,
         };
     },
     methods: {
@@ -56,7 +65,7 @@ export default {
             getCoins: 'coinsStore/getCoins',
         }),
         canShowLines() {
-            return this?.tickers?.length;
+            return this?.filteredTickers?.length;
         },
     },
     created() {
