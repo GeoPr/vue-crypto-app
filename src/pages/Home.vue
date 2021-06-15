@@ -59,7 +59,7 @@ export default {
             return this?.tickers?.length;
         },
     },
-    mounted() {
+    created() {
         (async () => {
             await this.getCoins();
             this.isLoading = false;
