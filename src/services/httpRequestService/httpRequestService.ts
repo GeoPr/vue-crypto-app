@@ -3,10 +3,10 @@ export class HttpRequestService {
         try {
             const response = await fetch(url, options);
             const data = await response.json();
-            return Promise.resolve(data);
+            return data;
         } catch (e) {
             console.log(e);
-            return Promise.reject(e);
+            throw e;
             // todo: errors handling
         }
     }

@@ -14,7 +14,7 @@ export class CryptoService {
 
         try {
             const data = await HttpRequestService.fetch<ICryptoOutput>(requestUrl);
-            return Promise.resolve(data);
+            return data;
         } catch (e) {
             return Promise.reject(e);
         }
