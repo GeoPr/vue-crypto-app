@@ -56,11 +56,9 @@ export default {
         // },
         ...mapMutations('tickersStore', ['remove', 'selectTicker']),
         removeTicker() {
-            // this.$store.commit('tickersStore/remove', this.ticker);
             this.remove(this.ticker);
         },
         selectCurrentTicker() {
-            // this.$store.commit('tickersStore/selectTicker', this.ticker);
             this.selectTicker(this.ticker);
         },
     },
