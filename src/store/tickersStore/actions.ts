@@ -1,9 +1,12 @@
 import { CryptoService } from '@/services/cryptoService/cryptoService';
 import { ActionContext } from 'vuex';
-import { IState } from '@/store/tickersStore/types';
+import { IAddOptions, IState } from '@/store/tickersStore/types';
 
 export const actions = {
-    async add({ state }: ActionContext<IState, IState>, name: string) {
+    async add(
+        { state }: ActionContext<IState, IState>,
+        { name, itemPerPage }: IAddOptions,
+    ) {
         const getCurrent = () => {
             return state.filteredTickers.find(ticker => ticker.name?.toLowerCase() === name.toLowerCase());
         };
@@ -22,7 +25,12 @@ export const actions = {
         };
 
         state.tickers.push(newTicker);
-        state.filteredTickers.push(newTicker);
+
+        if (itemPerPage) {
+            state.filteredTickers = state.tickers.slice(0, itemPerPage);
+        } else {
+            state.filteredTickers.push(newTicker);
+        }
 
         const currentTicker = getCurrent();
 

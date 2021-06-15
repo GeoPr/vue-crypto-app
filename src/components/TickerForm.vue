@@ -89,7 +89,7 @@ export default {
             const trimmed = this.tickerName.trim();
 
             if (trimmed) {
-                this.add(name ?? trimmed)
+                this.add({ name: name ?? trimmed, itemPerPage: 6 })
                     .then(() => {
                         this.error = '';
                         this.tickerName = '';

@@ -10,3 +10,13 @@ export interface IState {
     selectedTicker: ITicker | null;
     filteredTickers: ITicker[];
 }
+
+export interface IFilterOptions {
+    start: number;
+    end: number;
+}
+
+export interface IAddOptions {
+    name: string;
+    itemPerPage?: number;
+}

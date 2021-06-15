@@ -1,8 +1,9 @@
-import { IState, ITicker } from '@/store/tickersStore/types';
+import { IFilterOptions, IState, ITicker } from '@/store/tickersStore/types';
 
 export const mutations = {
     remove(state: IState, { name }: ITicker) {
-        state.filteredTickers = state.tickers.filter(ticker => ticker.name !== name);
+        state.tickers = state.tickers.filter(ticker => ticker.name !== name);
+        state.filteredTickers = state.tickers.slice(0, 6); // todo: remove hardcode
 
         if (state.selectedTicker?.name === name) {
             state.selectedTicker = null;
@@ -13,7 +14,15 @@ export const mutations = {
     selectTicker(state: IState, ticker: ITicker | null) {
         state.selectedTicker = ticker;
     },
-    filter(state: IState, name: string) {
-        state.filteredTickers = state.tickers.filter(ticker => ticker.name?.includes(name));
+    filter(state: IState, options: string | IFilterOptions) {
+        if (typeof options === 'object' && !Array.isArray(options)) {
+            state.filteredTickers = state.tickers.slice(options.start, options.end);
+        } else {
+            state.filteredTickers = state.tickers.filter(ticker => ticker.name?.includes(options as string));
+
+            if (state.filteredTickers.length === state.tickers.length) {
+                state.filteredTickers = state.tickers.slice(0, 6); // todo: remove hardcode
+            }
+        }
     },
 };

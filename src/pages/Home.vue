@@ -8,14 +8,22 @@
 
             <hr
                 class="w-full border-t border-gray-600 my-4"
-                v-if="canShowLines()"
             />
 
             <Filter />
 
             <hr
                 class="w-full border-t border-gray-600 my-4"
-                v-if="canShowLines()"
+            />
+
+            <Navigation
+                :items-per-page="6"
+                :max-length="tickers.length"
+                @change="onNavigationChange"
+            />
+
+            <hr
+                class="w-full border-t border-gray-600 my-4"
             />
 
             <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -40,17 +48,19 @@
 
 <script>
 import TickerForm from '@/components/TickerForm';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Ticker from '@/components/Ticker';
 import Loader from '@/components/Loader';
 import Graph from '@/components/Graph';
 import Filter from '@/components/Filter';
+import Navigation from '@/components/Navigation';
 
 export default {
     name: 'Home',
-    components: { Filter, Graph, Loader, Ticker, TickerForm },
+    components: { Navigation, Filter, Graph, Loader, Ticker, TickerForm },
     computed: {
         ...mapGetters({
+            tickers: 'tickersStore/tickers',
             filteredTickers: 'tickersStore/filteredTickers',
             selectedTicker: 'tickersStore/selectedTicker',
         }),
@@ -64,8 +74,14 @@ export default {
         ...mapActions({
             getCoins: 'coinsStore/getCoins',
         }),
+        ...mapMutations({
+            filterTickers: 'tickersStore/filter',
+        }),
         canShowLines() {
             return this?.filteredTickers?.length;
+        },
+        onNavigationChange({ start, end }) {
+            this.filterTickers({ start, end });
         },
     },
     created() {
